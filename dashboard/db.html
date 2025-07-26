@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrimeVision - AI-Powered Streaming Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 280px;
+            height: 80px;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(51, 224, 178, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .search-container {
+            flex: 1;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 12px 50px 12px 20px;
+            color: #ffffff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #33E0B2;
+            box-shadow: 0 0 0 3px rgba(51, 224, 178, 0.1);
+        }
+
+        .search-input::placeholder {
+            color: #8892b0;
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #8892b0;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .search-btn:hover {
+            color: #33E0B2;
+        }
+
+        /* Search Results Dropdown */
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(51, 224, 178, 0.2);
+            border-radius: 12px;
+            margin-top: 8px;
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+
+        .search-result-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .search-result-item:hover {
+            background: rgba(51, 224, 178, 0.1);
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .search-result-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .search-result-info h4 {
+            color: #ffffff;
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+        }
+
+        .search-result-info p {
+            color: #8892b0;
+            font-size: 0.8rem;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .auth-btn {
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .signin-btn {
+            background: transparent;
+            color: #8892b0;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .signin-btn:hover {
+            color: #33E0B2;
+            border-color: #33E0B2;
+        }
+
+        .signup-btn {
+            background: linear-gradient(135deg, #33E0B2, #2BC4A0);
+            color: #ffffff;
+        }
+
+        .signup-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(51, 224, 178, 0.3);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: rgba(20, 20, 35, 0.95);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(51, 224, 178, 0.1);
+            padding: 2rem 0;
+            z-index: 101;
+            transition: all 0.3s ease;
+        }
+
+        .logo-container {
+            padding: 0 2rem 2rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .logo-container h1 {
+            color: #33E0B2;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-shadow: 0 0 15px rgba(51, 224, 178, 0.3);
+        }
+
+        .logo-container p {
+            color: #8892b0;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0 1rem;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            color: #8892b0;
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(51, 224, 178, 0.1);
+            color: #33E0B2;
+            transform: translateX(5px);
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            margin-top: 80px;
+            padding: 2rem;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* Hero Slider Section */
+        .hero-section {
+            position: relative;
+            height: 500px;
+            border-radius: 24px;
+            margin-bottom: 3rem;
+            overflow: hidden;
+            border: 1px solid rgba(51, 224, 178, 0.2);
+        }
+
+        .hero-slider {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hero-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(51, 224, 178, 0.1) 0%, rgba(43, 196, 160, 0.05) 100%);
+            display: flex;
+            align-items: center;
+            padding: 3rem;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            width: 100%;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff, #33E0B2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            color: #8892b0;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .hero-btn {
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .primary-btn {
+            background: linear-gradient(135deg, #33E0B2, #2BC4A0);
+            color: #ffffff;
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(51, 224, 178, 0.4);
+        }
+
+        .secondary-btn {
+            background: transparent;
+            color: #8892b0;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .secondary-btn:hover {
+            color: #33E0B2;
+            border-color: #33E0B2;
+            background: rgba(51, 224, 178, 0.1);
+        }
+
+        .hero-image {
+            position: relative;
+            text-align: center;
+        }
+
+        .hero-character {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .hero-character:hover {
+            transform: scale(1.05);
+        }
+
+        /* Slider Navigation */
+        .slider-nav {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .slider-dot.active {
+            background: #33E0B2;
+            transform: scale(1.2);
+        }
+
+        /* Content Sections */
+        .content-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .view-all {
+            color: #33E0B2;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .view-all:hover {
+            color: #2BC4A0;
+            text-shadow: 0 0 8px rgba(51, 224, 178, 0.5);
+        }
+
+        /* Movie Cards Grid */
+        .movies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .movie-card {
+            background: rgba(26, 26, 46, 0.8);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: rgba(51, 224, 178, 0.3);
+        }
+
+        .movie-poster {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .movie-poster img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .movie-card:hover .movie-poster img {
+            transform: scale(1.1);
+        }
+
+        .movie-info {
+            padding: 1.5rem;
+        }
+
+        .movie-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        .movie-genre {
+            color: #8892b0;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .movie-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #33E0B2;
+            font-weight: 500;
+        }
+
+        /* Continue Watching Section */
+        .continue-watching {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .continue-card {
+            background: rgba(26, 26, 46, 0.8);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .continue-card:hover {
+            border-color: rgba(51, 224, 178, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .continue-info {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .continue-poster {
+            width: 80px;
+            height: 60px;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .continue-poster img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .continue-details h4 {
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .continue-details p {
+            color: #8892b0;
+            font-size: 0.9rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            margin-top: 1rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #33E0B2, #2BC4A0);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .navbar {
+                left: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 1rem;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .hero-section {
+                height: 400px;
+            }
+
+            .hero-slide {
+                padding: 2rem;
+            }
+
+            .hero-text h1 {
+                font-size: 2rem;
+            }
+
+            .movies-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1rem;
+            }
+
+            .auth-buttons {
+                gap: 0.5rem;
+            }
+
+            .auth-btn {
+                padding: 8px 16px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .search-container {
+                display: none;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .movies-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #8892b0;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .mobile-menu-toggle:hover {
+            color: #33E0B2;
+        }
+
+        @media (max-width: 1024px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .movie-card {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .movie-card:nth-child(1) { animation-delay: 0.1s; }
+        .movie-card:nth-child(2) { animation-delay: 0.2s; }
+        .movie-card:nth-child(3) { animation-delay: 0.3s; }
+        .movie-card:nth-child(4) { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="logo-container">
+            <h1>PrimeVision</h1>
+            <p>AI-Powered Streaming</p>
+        </div>
+        
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="#" class="nav-link active">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                        <polyline points="9,22 9,12 15,12 15,22"/>
+                    </svg>
+                    Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.35-4.35"/>
+                    </svg>
+                    Explore
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                    </svg>
+                    Favourites
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    Profile
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <svg class="nav-icon" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                    </svg>
+                    Settings
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Top Navigation Bar -->
+    <header class="navbar">
+        <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+        
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search movies, shows, actors..." id="searchInput">
+            <button class="search-btn" id="searchBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="m21 21-4.35-4.35"/>
+                </svg>
+            </button>
+            <div class="search-results" id="searchResults"></div>
+        </div>
+
+        <div class="auth-buttons">
+            <a href="login.html" class="auth-btn signin-btn">Sign In</a>
+            <a href="login.html" class="auth-btn signup-btn">Sign Up</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Slider Section -->
+        <section class="hero-section">
+            <div class="hero-slider">
+                <!-- Slide 1 - Stranger Things -->
+                <div class="hero-slide active">
+                    <div class="hero-content">
+                        <div class="hero-text">
+                            <h1>Stranger Things</h1>
+                            <p>When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces, and one strange little girl. Experience the supernatural thriller that captivated millions worldwide.</p>
+                            <div class="hero-buttons">
+                                <a href="login.html" class="hero-btn primary-btn">Watch Now</a>
+                                <a href="#" class="hero-btn secondary-btn">Add to List</a>
+                            </div>
+                        </div>
+                        <div class="hero-image">
+                            <img src="../images/stranger_things.jpg" alt="Stranger Things" class="hero-character">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 2 - The Witcher -->
+                <div class="hero-slide">
+                    <div class="hero-content">
+                        <div class="hero-text">
+                            <h1>The Witcher</h1>
+                            <p>Geralt of Rivia, a solitary monster hunter, struggles to find his place in a world where people often prove more wicked than beasts. Follow the epic fantasy adventure based on the bestselling novels.</p>
+                            <div class="hero-buttons">
+                                <a href="login.html" class="hero-btn primary-btn">Start Series</a>
+                                <a href="#" class="hero-btn secondary-btn">View Trailer</a>
+                            </div>
+                        </div>
+                        <div class="hero-image">
+                            <img src="../images/witcher.webp" alt="The Witcher" class="hero-character">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 3 - Breaking Bad -->
+                <div class="hero-slide">
+                    <div class="hero-content">
+                        <div class="hero-text">
+                            <h1>Breaking Bad</h1>
+                            <p>A high school chemistry teacher diagnosed with inoperable lung cancer turns to manufacturing and selling methamphetamine to secure his family's future. The critically acclaimed crime drama that redefined television.</p>
+                            <div class="hero-buttons">
+                                <a href="login.html" class="hero-btn primary-btn">Binge Watch</a>
+                                <a href="#" class="hero-btn secondary-btn">Episodes</a>
+                            </div>
+                        </div>
+                        <div class="hero-image">
+                            <img src="../images/breakingbad.avif" alt="Breaking Bad" class="hero-character">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 4 - The Mandalorian -->
+                <div class="hero-slide">
+                    <div class="hero-content">
+                        <div class="hero-text">
+                            <h1>The Mandalorian</h1>
+                            <p>After the fall of the Galactic Empire, lawlessness has spread throughout the galaxy. A lone gunfighter makes his way through the outer reaches, earning his keep as a bounty hunter in the Star Wars universe.</p>
+                            <div class="hero-buttons">
+                                <a href="login.html" class="hero-btn primary-btn">Watch Series</a>
+                                <a href="#" class="hero-btn secondary-btn">Behind Scenes</a>
+                            </div>
+                        </div>
+                        <div class="hero-image">
+                            <img src="../images/mandalorian.jpg" alt="The Mandalorian" class="hero-character">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slider Navigation -->
+            <div class="slider-nav">
+                <div class="slider-dot active" data-slide="0"></div>
+                <div class="slider-dot" data-slide="1"></div>
+                <div class="slider-dot" data-slide="2"></div>
+                <div class="slider-dot" data-slide="3"></div>
+            </div>
+        </section>
+
+        <!-- Continue Watching Section -->
+        <section class="content-section">
+            <div class="section-header">
+                <h2 class="section-title">Continue Watching</h2>
+                <a href="#" class="view-all">View All</a>
+            </div>
+            <div class="continue-watching">
+                <div class="continue-card">
+                    <div class="continue-info">
+                        <div class="continue-poster">
+                            <img src="../images/chernobyl.jpg" alt="Chernobyl">
+                        </div>
+                        <div class="continue-details">
+                            <h4>Chernobyl</h4>
+                            <p>Episode 3 • Drama</p>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 65%"></div>
+                    </div>
+                </div>
+                <div class="continue-card">
+                    <div class="continue-info">
+                        <div class="continue-poster">
+                            <img src="../images/snowpiercer.jpg" alt="Snowpiercer">
+                        </div>
+                        <div class="continue-details">
+                            <h4>Snowpiercer</h4>
+                            <p>Episode 7 • Sci-Fi</p>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 30%"></div>
+                    </div>
+                </div>
+                <div class="continue-card">
+                    <div class="continue-info">
+                        <div class="continue-poster">
+                            <img src="../images/platform.jpg" alt="The Platform">
+                        </div>
+                        <div class="continue-details">
+                            <h4>The Platform</h4>
+                            <p>Season 1 • Thriller</p>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 85%"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- You Might Like Section -->
+        <section class="content-section">
+            <div class="section-header">
+                <h2 class="section-title">You might like</h2>
+                <a href="#" class="view-all">View All</a>
+            </div>
+            <div class="movies-grid">
+                <div class="movie-card">
+                    <div class="movie-poster">
+                        <img src="../images/joker.jpg" alt="Joker">
+                    </div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Joker</h3>
+                        <p class="movie-genre">Drama • Crime</p>
+                        <div class="movie-rating">
+                            <span>⭐</span>
+                            <span>8.4</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card">
+                    <div class="movie-poster">
+                        <img src="../images/dune.jpg" alt="Dune">
+                    </div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Dune</h3>
+                        <p class="movie-genre">Sci-Fi • Adventure</p>
+                        <div class="movie-rating">
+                            <span>⭐</span>
+                            <span>8.0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card">
+                    <div class="movie-poster">
+                        <img src="../images/aquaman.jpg" alt="Aquaman">
+                    </div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Aquaman</h3>
+                        <p class="movie-genre">Action • Fantasy</p>
+                        <div class="movie-rating">
+                            <span>⭐</span>
+                            <span>6.8</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card">
+                    <div class="movie-poster">
+                        <img src="../images/batman.jpg" alt="The Batman">
+                    </div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">The Batman</h3>
+                        <p class="movie-genre">Action • Crime</p>
+                        <div class="movie-rating">
+                            <span>⭐</span>
+                            <span>7.8</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Popular Now Section -->
+        <section class="content-section">
+            <div class="section-header">
+                <h2 class="section-title">Popular Now</h2>
+                <a href="#" class="view-all">View All</a>
+            </div>
+            <div class="movies-grid">
+                <div class="movie-card">
+                    <div class="movie-poster">
+                        <img src="../images/stranger_things.jpg" alt="Stranger Things">
+                    </div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Stranger Things</h3>
+                        <p class="movie-genre">Horror • Sci-Fi</p>
+                        <div class="movie-rating">
+                            <span>⭐</span>
+                            <span>8.7</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card">
+                    <div class="movie-poster">
+                        <img src="../images/crown.jpg" alt="The Crown">
+                    </div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">The Crown</h3>
+                        <p class="movie-genre">Drama • Biography</p>
+                        <div class="movie-rating">
+                            <span>⭐</span>
+                            <span>8.6</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card">
+                    <div class="movie-poster">
+                        <img src="../images/house_of_dragon.jpg" alt="House of Dragon">
+                    </div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">House of Dragon</h3>
+                        <p class="movie-genre">Fantasy • Drama</p>
+                        <div class="movie-rating">
+                            <span>⭐</span>
+                            <span>8.5</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card">
+                    <div class="movie-poster">
+                        <img src="../images/money_heist.jpg" alt="Money Heist">
+                    </div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Money Heist</h3>
+                        <p class="movie-genre">Crime • Thriller</p>
+                        <div class="movie-rating">
+                            <span>⭐</span>
+                            <span>8.3</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Sample data for search functionality
+        const searchData = [
+            { title: "Chernobyl", genre: "Drama", type: "Series", rating: 9.4, image: "../images/chernobyl.jpg" },
+            { title: "Snowpiercer", genre: "Sci-Fi", type: "Series", rating: 7.0, image: "../images/snowpiercer.jpg" },
+            { title: "The Platform", genre: "Thriller", type: "Movie", rating: 7.0, image: "../images/platform.jpg" },
+            { title: "Joker", genre: "Drama", type: "Movie", rating: 8.4, image: "../images/joker.jpg" },
+            { title: "Dune", genre: "Sci-Fi", type: "Movie", rating: 8.0, image: "../images/dune.jpg" },
+            { title: "Aquaman", genre: "Action", type: "Movie", rating: 6.8, image: "../images/aquaman.jpg" },
+            { title: "The Batman", genre: "Action", type: "Movie", rating: 7.8, image: "../images/batman.jpg" },
+            { title: "Stranger Things", genre: "Horror", type: "Series", rating: 8.7, image: "../images/stranger_things.jpg" },
+            { title: "The Crown", genre: "Drama", type: "Series", rating: 8.6, image: "../images/crown.jpg" },
+            { title: "House of Dragon", genre: "Fantasy", type: "Series", rating: 8.5, image: "../images/house_of_dragon.jpg" },
+            { title: "Money Heist", genre: "Crime", type: "Series", rating: 8.3, image: "../images/money_heist.jpg" },
+            { title: "Breaking Bad", genre: "Crime", type: "Series", rating: 9.5, image: "../images/breakingbad.avif" },
+            { title: "The Witcher", genre: "Fantasy", type: "Series", rating: 8.2, image: "../images/witcher.webp" },
+            { title: "Mandalorian", genre: "Sci-Fi", type: "Series", rating: 8.7, image: "../images/mandalorian.jpg" },
+            { title: "Avengers Endgame", genre: "Action", type: "Movie", rating: 8.4, image: "../images/avengers_endgame.jpg" }
+        ];
+
+        // Hero Slider Functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.hero-slide');
+        const dots = document.querySelectorAll('.slider-dot');
+        const totalSlides = slides.length;
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            slides[index].classList.add('active');
+            dots[index].classList.add('active');
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            showSlide(currentSlide);
+        }
+
+        // Auto-advance slider
+        setInterval(nextSlide, 5000);
+
+        // Dot navigation
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                currentSlide = index;
+                showSlide(currentSlide);
+            });
+        });
+
+        // Search Functionality
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const searchResults = document.getElementById('searchResults');
+
+        function performSearch(query) {
+            if (!query.trim()) {
+                searchResults.style.display = 'none';
+                return;
+            }
+
+            const filteredResults = searchData.filter(item => 
+                item.title.toLowerCase().includes(query.toLowerCase()) ||
+                item.genre.toLowerCase().includes(query.toLowerCase()) ||
+                item.type.toLowerCase().includes(query.toLowerCase())
+            );
+
+            displaySearchResults(filteredResults);
+        }
+
+        function displaySearchResults(results) {
+            if (results.length === 0) {
+                searchResults.innerHTML = '<div class="search-result-item"><p>No results found</p></div>';
+            } else {
+                searchResults.innerHTML = results.map(item => `
+                    <div class="search-result-item" onclick="selectSearchResult('${item.title}')">
+                        <div class="search-result-image">
+                            <img src="${item.image}" alt="${item.title}">
+                        </div>
+                        <div class="search-result-info">
+                            <h4>${item.title}</h4>
+                            <p>${item.genre} • ${item.type} • ⭐ ${item.rating}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            searchResults.style.display = 'block';
+        }
+
+        function selectSearchResult(title) {
+            searchInput.value = title;
+            searchResults.style.display = 'none';
+            alert(`Opening ${title}...`);
+        }
+
+        // Search event listeners
+        searchInput.addEventListener('input', (e) => {
+            performSearch(e.target.value);
+        });
+
+        searchInput.addEventListener('focus', () => {
+            if (searchInput.value.trim()) {
+                performSearch(searchInput.value);
+            }
+        });
+
+        searchBtn.addEventListener('click', () => {
+            performSearch(searchInput.value);
+        });
+
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                performSearch(searchInput.value);
+            }
+        });
+
+        // Hide search results when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-container')) {
+                searchResults.style.display = 'none';
+            }
+        });
+
+        // Mobile menu toggle
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const sidebar = document.getElementById('sidebar');
+
+        mobileMenuToggle.addEventListener('click', () => {
+            sidebar.style.transform = sidebar.style.transform === 'translateX(0px)' ? 'translateX(-100%)' : 'translateX(0px)';
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 1024 && !sidebar.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
+                sidebar.style.transform = 'translateX(-100%)';
+            }
+        });
+
+        // Movie card interactions
+        const movieCards = document.querySelectorAll('.movie-card');
+        movieCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const title = card.querySelector('.movie-title').textContent;
+                alert(`Opening ${title}...`);
+            });
+        });
+
+        // Continue watching interactions
+        const continueCards = document.querySelectorAll('.continue-card');
+        continueCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const title = card.querySelector('h4').textContent;
+                alert(`Resuming ${title}...`);
+            });
+        });
+
+        // Navbar scroll effect
+        let lastScrollTop = 0;
+        const navbar = document.querySelector('.navbar');
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                navbar.style.transform = 'translateY(-100%)';
+            } else {
+                navbar.style.transform = 'translateY(0)';
+            }
+            
+            lastScrollTop = scrollTop;
+        });
+
+        // Add loading states for auth buttons
+        const authButtons = document.querySelectorAll('.auth-btn');
+        authButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                btn.style.opacity = '0.7';
+                btn.textContent = 'Loading...';
+                
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 500);
+            });
+        });
+    </script>
+</body>
+</html>
