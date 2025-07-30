@@ -1150,13 +1150,14 @@
         });
 
         // Movie card interactions
-        const movieCards = document.querySelectorAll('.movie-card');
-        movieCards.forEach(card => {
-            card.addEventListener('click', () => {
-                const title = card.querySelector('.movie-title').textContent;
-                alert(`Opening ${title}...`);
-            });
-        });
+        // Movie card interactions - redirect to trailers page
+const movieCards = document.querySelectorAll('.movie-card');
+movieCards.forEach(card => {
+    card.addEventListener('click', () => {
+        window.location.href = "trailers.html";
+    });
+});
+
 
         // Continue watching interactions
         const continueCards = document.querySelectorAll('.continue-card');
