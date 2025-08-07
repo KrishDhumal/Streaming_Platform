@@ -385,35 +385,35 @@
       <div class="plans-container">
         <div class="plan-card">
           <h3 class="plan-name">Basic</h3>
-          <p class="plan-price">$4.99 / month</p>
+          <p class="plan-price">200₹ / month</p>
           <ul class="plan-features">
             <li>720p Streaming</li>
             <li>Limited Content Access</li>
             <li>Ads Included</li>
           </ul>
-          <button class="subscribe-btn" data-plan="Basic" data-price="4.99">Subscribe</button>
+          <button class="subscribe-btn" data-plan="Basic" data-price="200">Subscribe</button>
         </div>
         <div class="plan-card">
           <h3 class="plan-name">Standard</h3>
-          <p class="plan-price">$9.99 / month</p>
+          <p class="plan-price">500₹ / month</p>
           <ul class="plan-features">
             <li>1080p Full HD</li>
             <li>Unlimited Content</li>
             <li>No Ads</li>
             <li>Offline Download</li>
           </ul>
-          <button class="subscribe-btn" data-plan="Standard" data-price="9.99">Subscribe</button>
+          <button class="subscribe-btn" data-plan="Standard" data-price="500">Subscribe</button>
         </div>
         <div class="plan-card">
           <h3 class="plan-name">Premium</h3>
-          <p class="plan-price">$14.99 / month</p>
+          <p class="plan-price">700₹ / month</p>
           <ul class="plan-features">
             <li>4K Ultra HD + HDR</li>
             <li>Early Access to Releases</li>
             <li>Multiple Devices</li>
             <li>Offline Mode</li>
           </ul>
-          <button class="subscribe-btn" data-plan="Premium" data-price="14.99">Subscribe</button>
+          <button class="subscribe-btn" data-plan="Premium" data-price="700">Subscribe</button>
         </div>
       </div>
     </section>
@@ -425,11 +425,11 @@
       <h2>Customize Your Plan</h2>
       <p id="selected-plan" style="margin-bottom: 1rem; color: #b0b8c9;"></p>
 
-      <label><input type="checkbox" class="addon" value="2.99" /> Add Extra Screen (+$2.99)</label>
-      <label><input type="checkbox" class="addon" value="3.99" /> Exclusive Movies Access (+$3.99)</label>
-      <label><input type="checkbox" class="addon" value="1.99" /> Parental Controls (+$1.99)</label>
+      <label><input type="checkbox" class="addon" value="120" /> Add Extra Screen (+120₹)</label>
+      <label><input type="checkbox" class="addon" value="150" /> Exclusive Movies Access (+150₹)</label>
+      <label><input type="checkbox" class="addon" value="89" /> Parental Controls (+89₹)</label>
 
-      <div class="total-cost" id="totalCost">Total: $0.00</div>
+      <div class="total-cost" id="totalCost">Total: ₹0.00</div>
 
       <div class="billing-btns">
         <button class="close-btn" onclick="closeModal()">Cancel</button>
@@ -449,7 +449,7 @@
       button.addEventListener("click", () => {
         const plan = button.dataset.plan;
         basePrice = parseFloat(button.dataset.price);
-        planText.textContent = `Plan: ${plan} - $${basePrice.toFixed(2)}`;
+        planText.textContent = `Plan: ${plan} - ₹${basePrice.toFixed(2)}`;
         modal.style.display = "flex";
         updateTotal();
         document.querySelectorAll(".addon").forEach(cb => cb.checked = false);
@@ -465,7 +465,7 @@
       document.querySelectorAll(".addon:checked").forEach(cb => {
         total += parseFloat(cb.value);
       });
-      totalCostElement.textContent = `Total: $${total.toFixed(2)}`;
+      totalCostElement.textContent = `Total: ₹${total.toFixed(2)}`;
     }
 
     function closeModal() {
