@@ -426,25 +426,59 @@
 
   /* Movie Cards Grid */
   .movies-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 2rem;
-  }
+  display: flex;
+  gap: 2rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 1rem 0;
+  scroll-behavior: smooth;
+}
 
-  .movie-card {
-      background: rgba(26, 26, 46, 0.8);
-      border-radius: 16px;
-      overflow: hidden;
-      transition: all 0.3s ease;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      cursor: pointer;
-  }
+/* Custom scrollbar styling */
+.movies-grid::-webkit-scrollbar {
+  height: 8px;
+}
 
-  .movie-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-      border-color: rgba(51, 224, 178, 0.3);
-  }
+.movies-grid::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.movies-grid::-webkit-scrollbar-thumb {
+  background: #33E0B2;
+  border-radius: 4px;
+}
+
+.movies-grid::-webkit-scrollbar-thumb:hover {
+  background: #2BC4A0;
+}
+
+.movie-card {
+  background: rgba(26, 26, 46, 0.8);
+  border: 2px solid #33E0B2;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  box-shadow: 
+      0 4px 15px rgba(0, 0, 0, 0.2),
+      0 0 0 1px rgba(51, 224, 178, 0.1);
+  flex: 0 0 280px; /* Fixed width, no shrinking */
+  min-width: 280px;
+}
+
+.movie-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 
+      0 20px 40px rgba(0, 0, 0, 0.4),
+      0 0 20px rgba(51, 224, 178, 0.2);
+}
+
+/* Enhanced glow effect for movie cards */
+.movie-card:hover .movie-poster img {
+    transform: scale(1.1);
+}
 
   .movie-poster {
       width: 100%;
@@ -497,18 +531,24 @@
   }
 
   .continue-card {
-      background: rgba(26, 26, 46, 0.8);
-      border-radius: 12px;
-      padding: 1.5rem;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: all 0.3s ease;
-      cursor: pointer;
-  }
+  background: rgba(26, 26, 46, 0.8);
+  border: 2px solid #33E0B2;
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  box-shadow: 
+      0 4px 15px rgba(0, 0, 0, 0.2),
+      0 0 0 1px rgba(51, 224, 178, 0.1);
+}
 
-  .continue-card:hover {
-      border-color: rgba(51, 224, 178, 0.3);
-      transform: translateY(-5px);
-  }
+.continue-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 
+      0 15px 30px rgba(0, 0, 0, 0.3),
+      0 0 20px rgba(51, 224, 178, 0.2);
+}
 
   .continue-info {
       display: flex;
@@ -581,6 +621,15 @@
   }
 
   @media (max-width: 768px) {
+      .movies-grid {
+    gap: 1rem;
+  }
+  
+  .movie-card {
+    flex: 0 0 250px;
+    min-width: 250px;
+  }
+
       .navbar {
           padding: 0 1rem;
       }
@@ -601,11 +650,6 @@
           font-size: 2rem;
       }
 
-      .movies-grid {
-          grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-          gap: 1rem;
-      }
-
       .auth-buttons {
           gap: 0.5rem;
       }
@@ -617,6 +661,11 @@
   }
 
   @media (max-width: 480px) {
+    .movie-card {
+    flex: 0 0 200px;
+    min-width: 200px;
+  }
+
       .search-container {
           display: none;
       }
@@ -624,10 +673,6 @@
       .hero-buttons {
           flex-direction: column;
           align-items: center;
-      }
-
-      .movies-grid {
-          grid-template-columns: 1fr;
       }
   }
 
@@ -673,11 +718,6 @@
   .movie-card:nth-child(3) { animation-delay: 0.3s; }
   .movie-card:nth-child(4) { animation-delay: 0.4s; }
 
-  /* New CSS for hidden cards */
-  .hidden-movie-card {
-      display: none;
-  }
-
   /* Adjust grid for smaller screens */
   @media (max-width: 1200px) {
       .movies-grid {
@@ -686,22 +726,6 @@
   }
 
   @media (max-width: 768px) {
-      .movies-grid {
-          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-          gap: 1rem;
-      }
-      .movie-card {
-          border-radius: 12px;
-      }
-      .movie-info {
-          padding: 1rem;
-      }
-      .movie-title {
-          font-size: 1rem;
-      }
-      .movie-genre {
-          font-size: 0.8rem;
-      }
       .continue-watching {
           grid-template-columns: 1fr; /* Stack on small mobile */
           gap: 1rem;
@@ -748,9 +772,6 @@
       }
       .view-all {
           font-size: 0.9rem;
-      }
-      .movies-grid {
-          grid-template-columns: 1fr; /* Single column on very small screens */
       }
   }
   .greeting-text {
@@ -945,7 +966,7 @@
           </a>
       </li>
       <li class="nav-item">
-          <a href="/Streaming_Platform/views/subscription.html" class="nav-link">
+          <a href="views/subscription.html" class="nav-link">
               <svg class="nav-icon" viewBox="0 0 24 24">
                   <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82V9a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
               </svg>
@@ -1190,7 +1211,7 @@
               </div>
           </div>
           <!-- Additional 8 cards for You Might Like -->
-          <div class="movie-card hidden-movie-card"
+          <div class="movie-card"
                data-trailer="https://www.youtube.com/embed/dQw4w9WgXcQ"
                data-title="Cosmic Echoes"
                data-genre="Sci-Fi • Thriller"
@@ -1208,7 +1229,7 @@
                   </div>
               </div>
           </div>
-          <div class="movie-card hidden-movie-card"
+          <div class="movie-card"
                data-trailer="https://www.youtube.com/embed/dQw4w9WgXcQ"
                data-title="Dragon's Legacy"
                data-genre="Fantasy • Adventure"
@@ -1226,7 +1247,7 @@
                   </div>
               </div>
           </div>
-          <div class="movie-card hidden-movie-card"
+          <div class="movie-card"
                data-trailer="https://www.youtube.com/embed/dQw4w9WgXcQ"
                data-title="Agent X"
                data-genre="Action • Spy"
@@ -1244,7 +1265,7 @@
                   </div>
               </div>
           </div>
-          <div class="movie-card hidden-movie-card"
+          <div class="movie-card"
                data-trailer="https://www.youtube.com/embed/dQw4w9WgXcQ"
                data-title="Mind Games"
                data-genre="Thriller • Mystery"
@@ -1262,7 +1283,7 @@
                   </div>
               </div>
           </div>
-          <div class="movie-card hidden-movie-card"
+          <div class="movie-card"
                data-trailer="https://www.youtube.com/embed/dQw4w9WgXcQ"
                data-title="The Royal Court"
                data-genre="Drama • History"
@@ -1280,7 +1301,7 @@
                   </div>
               </div>
           </div>
-          <div class="movie-card hidden-movie-card"
+          <div class="movie-card"
                data-trailer="https://www.youtube.com/embed/dQw4w9WgXcQ"
                data-title="Love & Laughter"
                data-genre="Comedy • Romance"
@@ -1298,7 +1319,7 @@
                   </div>
               </div>
           </div>
-          <div class="movie-card hidden-movie-card"
+          <div class="movie-card"
                data-trailer="https://www.youtube.com/embed/dQw4w9WgXcQ"
                data-title="Lost Civilizations"
                data-genre="Adventure • Action"
@@ -1316,7 +1337,7 @@
                   </div>
               </div>
           </div>
-          <div class="movie-card hidden-movie-card"
+          <div class="movie-card"
                data-trailer="https://www.youtube.com/embed/dQw4w9WgXcQ"
                data-title="The Silent Witness"
                data-genre="Mystery • Crime"
@@ -1417,7 +1438,7 @@
               </div>
           </div>
           <!-- Additional 8 cards for Popular Now -->
-          <div class="movie-card hidden-movie-card"
+          <div class="movie-card"
                data-trailer="https://www.youtube.com/embed/dQw4w9WgXcQ"
                data-title="Cyberpunk Dreams"
                data-genre="Sci-Fi • Action"
@@ -1435,7 +1456,7 @@
                   </div>
               </div>
           </div>
-          <div class="movie-card hidden-movie-card"
+          <div class="movie-card"
                data-trailer="https://www.youtube.com/embed/dQw4w9WgXcQ"
                data-title="The Last Kingdom"
                data-genre="Historical • Drama"
@@ -1453,7 +1474,7 @@
                   </div>
               </div>
           </div>
-          <div class="movie-card hidden-movie-card"
+          <div class="movie-card"
                data-trailer="https://www.youtube.com/embed/dQw4w9WgXcQ"
                data-title="Whispers in the Dark"
                data-genre="Thriller • Supernatural"
@@ -1471,7 +1492,7 @@
                   </div>
               </div>
           </div>
-          <div class="movie-card hidden-movie-card"
+          <div class="movie-card"
                data-trailer="https://www.youtube.com/embed/dQw4w9WgXcQ"
                data-title="The Enchanted Forest"
                data-genre="Animation • Adventure"
@@ -1489,7 +1510,7 @@
                   </div>
               </div>
           </div>
-          <div class="movie-card hidden-movie-card"
+          <div class="movie-card"
                data-trailer="https://www.youtube.com/embed/dQw4w9WgXcQ"
                data-title="City of Shadows"
                data-genre="Crime • Drama"
@@ -1507,13 +1528,14 @@
                   </div>
               </div>
           </div>
-          <div class="movie-card hidden-movie-card"
+          <div class="movie-card"
                data-trailer="https://www.youtube.com/embed/dQw4w9WgXcQ"
                data-title="Starfall Chronicles"
                data-genre="Sci-Fi • Space Opera"
                data-rating="8.8"
                data-description="An epic saga spanning galaxies, following heroes and villains in a cosmic battle for supremacy.">
               <div class="movie-poster">
+                  <img src="/placeholder.svg?height=200&width=280" alt="Starfall Chronicles">
                   <img src="/placeholder.svg?height=200&width=280" alt="Starfall Chronicles">
               </div>
               <div class="movie-info">
@@ -1525,7 +1547,7 @@
                   </div>
               </div>
           </div>
-          <div class="movie-card hidden-movie-card"
+          <div class="movie-card"
                data-trailer="https://www.youtube.com/embed/dQw4w9WgXcQ"
                data-title="The Healers"
                data-genre="Drama • Medical"
@@ -1543,7 +1565,7 @@
                   </div>
               </div>
           </div>
-          <div class="movie-card hidden-movie-card"
+          <div class="movie-card"
                data-trailer="https://www.youtube.com/embed/dQw4w9WgXcQ"
                data-title="Wasteland Survivors"
                data-genre="Action • Post-Apocalyptic"
@@ -1797,35 +1819,6 @@
           }, 500);
       });
   });
-
-  function setupViewAllToggle(buttonId, gridId) {
-      const button = document.getElementById(buttonId);
-      const grid = document.getElementById(gridId);
-      const hiddenCards = grid.querySelectorAll('.hidden-movie-card');
-
-      if (button && grid && hiddenCards.length > 0) {
-          let showingAll = false;
-
-          button.addEventListener('click', (e) => {
-              e.preventDefault();
-              showingAll = !showingAll;
-
-              hiddenCards.forEach(card => {
-                  if (showingAll) {
-                      card.style.display = 'block'; /* Or 'grid-item' if you have a specific class for grid items */
-                  } else {
-                      card.style.display = 'none';
-                  }
-              });
-
-              button.textContent = showingAll ? 'View Less' : 'View All';
-          });
-      }
-  }
-
-  // Setup toggles for both sections
-  setupViewAllToggle('viewAllYouMightLike', 'youMightLikeGrid');
-  setupViewAllToggle('viewAllPopularNow', 'popularNowGrid');
 
   function showGreeting() {
       let now = new Date();
